@@ -1,18 +1,14 @@
-Hello, My Friends  
-Thank you for having interest in this repository ! 
+# youtube clone coding
 
-To use this application, 
+sns에 인프런 광고로 떴는데 기술스택이 재미있어보였고 요즘 직접 구현해본 스택이라 반복 숙달하기 위해서 개발중이다.
 
-1. make dev.js file inside config folder 
-2. put mongoDB info into dev.js file 
-3. Type  " npm install " inside the root directory  ( Download Server Dependencies ) 
-4. Type " npm install " inside the client directory ( Download Front-end Dependencies )
+21.11.7에 시작하였고 일주일 안에 개발 완료할 예정이다.
 
+궁금한 부분을 정리하면서 개발해보자.
 
-If you have problem, feel free to ask me ^^ 
+## mysql vs mongodb
 
-You can watch the tutorial for this app.
-
-https://www.youtube.com/channel/UCFyXA9x8lpL3EYWeYhj4C4Q?view_as=subscriber
-
-
+- database - database
+- tables - collections
+- Rows - documents
+- Columns = Fileds

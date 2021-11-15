@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { Typography, Button, Form, message, Input, Icon } from 'antd';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -18,11 +20,15 @@ const catogoryOptions = [
   { value: 0, label: 'Sports' },
 ];
 
-function VideoUploadPage() {
+function VideoUploadPage(props) {
+  const user = useSelector((state) => state.user);
   const [videoTitle, setVideoTitle] = useState('');
   const [description, setDescription] = useState('');
   const [privacy, setPrivacy] = useState(0);
   const [categories, setCategories] = useState('Film & Animation');
+  const [filePath, setFilePath] = useState('');
+  const [duration, setDuration] = useState('');
+  const [thumbnail, setThumbnail] = useState('');
 
   const handleChangeTitle = (event) => {
     setVideoTitle(event.currentTarget.value);
@@ -40,6 +46,74 @@ function VideoUploadPage() {
 
   const handleChangeTwo = (event) => {
     setCategories(event.currentTarget.value);
+  };
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    if (user.userData && !user.userData.isAuth) {
+      return alert('Please Log in First');
+    }
+
+    if (
+      videoTitle === '' ||
+      description === '' ||
+      categories === '' ||
+      filePath === '' ||
+      duration === '' ||
+      thumbnail === ''
+    ) {
+      return alert('Please first fill all the fields');
+    }
+
+    const variables = {
+      writer: user.userData._id,
+      title: videoTitle,
+      description: description,
+      privacy: privacy,
+      filePath: filePath,
+      category: categories,
+      duration: duration,
+      thumbnail: thumbnail,
+    };
+
+    axios.post('/api/video/uploadVideo', variables).then((response) => {
+      if (response.data.success) {
+        alert('video Uploaded Successfully');
+        props.history.push('/');
+      } else {
+        alert('Failed to upload video');
+      }
+    });
+  };
+
+  const onDrop = (files) => {
+    let formData = new FormData();
+    const config = {
+      header: { 'content-type': 'multipart/form-data' },
+    };
+    formData.append('file', files[0]);
+
+    axios.post('/api/video/uploadfiles', formData, config).then((response) => {
+      if (response.data.success) {
+        let variable = {
+          filePath: response.data.filePath,
+          fileName: response.data.fileName,
+        };
+        setFilePath(response.data.filePath);
+        //gerenate thumbnail with this filepath !
+        axios.post('/api/video/thumbnail', variable).then((response) => {
+          if (response.data.success) {
+            setDuration(response.data.fileDuration);
+            setThumbnail(response.data.thumbsFilePath);
+          } else {
+            alert('Failed to make the thumbnails');
+          }
+        });
+      } else {
+        alert('failed to save the video in server');
+      }
+    });
   };
 
   return (
@@ -69,9 +143,9 @@ function VideoUploadPage() {
             )}
           </Dropzone>
 
-          {Thumbnail !== '' && (
+          {thumbnail !== '' && (
             <div>
-              <img src={`http://localhost:5000/${Thumbnail}`} alt="haha" />
+              <img src={`http://localhost:5000/${thumbnail}`} alt="haha" />
             </div>
           )}
         </div>
