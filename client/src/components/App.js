@@ -6,6 +6,7 @@ import LandingPage from './views/LandingPage/LandingPage.js';
 import LoginPage from './views/LoginPage/LoginPage.js';
 import RegisterPage from './views/RegisterPage/RegisterPage.js';
 import VideoUploadPage from './views/VideoUploadPage/VideoUploadPage.js';
+import VideoDatailPage from './views/VideoDetailPage/VideoDetailPage.js';
 import NavBar from './views/NavBar/NavBar';
 import Footer from './views/Footer/Footer';
 
@@ -26,6 +27,11 @@ function App() {
             exact
             path="/video/upload"
             component={Auth(VideoUploadPage, true)}
+          />
+          <Route
+            exact
+            path="/video/:videoId"
+            component={Auth(VideoDatailPage, null)}
           />
         </Switch>
       </div>
