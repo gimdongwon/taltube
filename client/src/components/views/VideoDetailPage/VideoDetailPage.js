@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, List } from 'antd';
+import { Row, Col, List, Avatar } from 'antd';
 import axios from 'axios';
+import SideVideo from './Section/SideVIdeo';
 
 function VideoDetailPage(props) {
   const [videoDetail, setVideoDetail] = useState([]);
@@ -27,7 +28,7 @@ function VideoDetailPage(props) {
             />
             <List.Item actions>
               <List.Item.Meta
-                avatar={videoDetail.writer.image}
+                avatar={<Avatar src={videoDetail.writer.image} />}
                 title={videoDetail.writer.name}
                 description={videoDetail.description}
               />
@@ -36,7 +37,7 @@ function VideoDetailPage(props) {
           </div>
         </Col>
         <Col lg={6} xs={24}>
-          Side
+          <SideVideo />
         </Col>
       </Row>
     );
