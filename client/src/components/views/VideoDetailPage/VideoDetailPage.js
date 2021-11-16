@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, List, Avatar } from 'antd';
 import axios from 'axios';
 import SideVideo from './Section/SideVIdeo';
-import Subscribe from './Section/Subscribe';
+import Subscriber from './Section/Subscriber';
 
 function VideoDetailPage(props) {
   const [videoDetail, setVideoDetail] = useState([]);
@@ -16,7 +16,8 @@ function VideoDetailPage(props) {
         alert('failed get videos info');
       }
     });
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   if (videoDetail.writer) {
     return (
       <Row gutter={[16, 16]}>
@@ -28,7 +29,7 @@ function VideoDetailPage(props) {
               controls
             />
             <List.Item
-              actions={[<Subscribe userTo={videoDetail.writer._id} />]}
+              actions={[<Subscriber userTo={videoDetail.writer._id} />]}
             >
               <List.Item.Meta
                 avatar={<Avatar src={videoDetail.writer.image} />}

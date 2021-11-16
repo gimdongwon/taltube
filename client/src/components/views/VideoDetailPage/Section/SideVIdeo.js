@@ -11,12 +11,15 @@ function SideVideo() {
         alert('faild to get side videos');
       }
     });
-  });
+  }, []);
   const renderSideVideo = videos.map((video, idx) => {
     var minutes = Math.floor(video.duration / 60);
     var seconds = Math.floor(video.duration - minutes * 60);
     return (
-      <div style={{ display: 'flex', marginTop: '1rem', padding: '0 2rem' }}>
+      <div
+        style={{ display: 'flex', marginTop: '1rem', padding: '0 2rem' }}
+        key={idx}
+      >
         <div style={{ width: '40%', marginRight: '1rem' }}>
           <a href={`/video/${video._id}`} style={{ color: 'gray' }}>
             <img
