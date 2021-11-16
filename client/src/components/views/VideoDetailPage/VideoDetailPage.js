@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, List, Avatar } from 'antd';
 import axios from 'axios';
 import SideVideo from './Section/SideVIdeo';
+import Subscribe from './Section/Subscribe';
 
 function VideoDetailPage(props) {
   const [videoDetail, setVideoDetail] = useState([]);
@@ -26,7 +27,9 @@ function VideoDetailPage(props) {
               src={`http://localhost:5000/${videoDetail.filePath}`}
               controls
             />
-            <List.Item actions>
+            <List.Item
+              actions={[<Subscribe userTo={videoDetail.writer._id} />]}
+            >
               <List.Item.Meta
                 avatar={<Avatar src={videoDetail.writer.image} />}
                 title={videoDetail.writer.name}
