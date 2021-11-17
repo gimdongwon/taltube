@@ -13,6 +13,7 @@ function Subscriber(props) {
       userFrom: userFrom,
     };
 
+    // 구독자 수를 가져오는 api 호출
     axios.post('/api/subscribe/subscribeNumber', variable).then((res) => {
       if (res.data.success) {
         setSubscribeNumber(res.data.subscribeNumber);
@@ -21,6 +22,7 @@ function Subscriber(props) {
       }
     });
 
+    // 구독했는지 여부를 알려주는 api 호출
     axios.post('/api/subscribe/subscribed', variable).then((res) => {
       if (res.data.success) {
         setSubscribed(res.data.subscribed);
@@ -37,6 +39,7 @@ function Subscriber(props) {
       userFrom: userFrom,
     };
     if (subscribed) {
+      // 구독 취소 api 호출
       axios
         .post('/api/subscribe/unSubscribe', subscribeVariable)
         .then((res) => {
@@ -48,6 +51,7 @@ function Subscriber(props) {
           }
         });
     } else {
+      // 구독하기 api 호출
       axios.post('/api/subscribe/subscribe', subscribeVariable).then((res) => {
         if (res.data.success) {
           setSubscribeNumber(subscribeNumber + 1);

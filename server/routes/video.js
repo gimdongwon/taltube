@@ -5,6 +5,7 @@ const ffmpeg = require('fluent-ffmpeg');
 
 const { auth } = require('../middleware/auth');
 const multer = require('multer');
+const { Subscriber } = require('../models/Subscriber');
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -105,6 +106,25 @@ router.post('/getVideoDetail', (req, res) => {
       if (err) return res.status(400).send(err);
       return res.status(200).json({ success: true, videoDetail });
     });
+});
+
+// 구독한 영상 가져오는 api
+router.post('/getSubscriptionVideos', (req, res) => {
+  // 자신의 아이디를 가지고 구독하는 사람들을 찾는다.
+  Subscriber.find({ userTo: req.body.userFrom }).exec((err, subscriberInfo) => {
+    if (err) return res.status(400).send(err);
+    let subscribedUser = [];
+    subscriberInfo.map((item, i) => {
+      subscribedUser.push(item.userTo);
+    });
+    // 찾은 사람들의 비디오를 가져온다.
+    Video.find({ writer: { $in: subscribedUser } }) // $in이라는 새로운 기능 // 들어있는 모든사람들의 아이디를 찾을 수 있음.
+      .populate('writer')
+      .exec((err, videos) => {
+        if (err) return res.status(400).send(err);
+        return res.status(200).json({ success: true, videos });
+      });
+  });
 });
 
 module.exports = router;

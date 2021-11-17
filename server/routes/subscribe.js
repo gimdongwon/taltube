@@ -6,6 +6,7 @@ const { Subscriber } = require('../models/Subscriber');
 //             Subscribe
 //=================================
 
+// 구독자수 확인 api
 router.post('/subscribeNumber', (req, res) => {
   Subscriber.find({ userTo: req.body.userTo }).exec((err, subscribe) => {
     if (err) return res.status(400).send(err);
@@ -14,6 +15,8 @@ router.post('/subscribeNumber', (req, res) => {
       .json({ success: true, subscribeNumber: subscribe.length });
   });
 });
+
+// 구독 상태 확인 api
 router.post('/subscribed', (req, res) => {
   Subscriber.find({
     userTo: req.body.userTo,
@@ -27,6 +30,8 @@ router.post('/subscribed', (req, res) => {
     return res.status(200).json({ success: true, subscribed: result });
   });
 });
+
+// 구독 취소 api
 router.post('/unSubscribe', (req, res) => {
   Subscriber.findOneAndDelete({
     userTo: req.body.userTo,
@@ -36,6 +41,8 @@ router.post('/unSubscribe', (req, res) => {
     return res.status(200).json({ success: true, subscribe });
   });
 });
+
+// 구독하기 api
 router.post('/subscribe', (req, res) => {
   const subscribe = new Subscriber(req.body);
   subscribe.save((err, doc) => {
