@@ -7,6 +7,9 @@ import Comment from './Section/Comment';
 
 function VideoDetailPage(props) {
   const [videoDetail, setVideoDetail] = useState([]);
+
+  const [commentLists, setCommentLists] = useState([]);
+
   const videoId = props.match.params.videoId;
   const variable = { videoId };
   useEffect(() => {
@@ -17,8 +20,18 @@ function VideoDetailPage(props) {
         alert('failed get videos info');
       }
     });
+    axios.post('/api/comment/getComments', variable).then((res) => {
+      if (res.data.success) {
+        setCommentLists(res.data.comments);
+      } else {
+        alert('comment 불러오기 실패');
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const updateComment = (newComment) => {
+    setCommentLists(commentLists.concat(newComment));
+  };
   if (videoDetail.writer) {
     const subscribeButton = videoDetail.writer._id !==
       localStorage.getItem('userId') && (
@@ -38,13 +51,21 @@ function VideoDetailPage(props) {
             />
             <List.Item actions={[subscribeButton]}>
               <List.Item.Meta
-                avatar={<Avatar src={videoDetail.writer.image} />}
-                title={videoDetail.writer.name}
+                avatar={
+                  <Avatar
+                    src={videoDetail.writer && videoDetail.writer.image}
+                  />
+                }
+                title={videoDetail.title}
                 description={videoDetail.description}
               />
             </List.Item>
             {/* comments */}
-            <Comment postId={videoId} />
+            <Comment
+              postId={videoDetail._id}
+              commentLists={commentLists}
+              refreshFunction={updateComment}
+            />
           </div>
         </Col>
         <Col lg={6} xs={24}>

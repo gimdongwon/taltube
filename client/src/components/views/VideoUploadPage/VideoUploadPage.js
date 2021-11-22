@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Dropzone from 'react-dropzone';
-import { Typography, Button, Form, message, Input, Icon } from 'antd';
+import { Typography, Button, Form, Input, Icon } from 'antd';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
